@@ -70,7 +70,7 @@ import retrofit2.Response
 
 class MainActivity : ComponentActivity() {
 
-    
+
 
     @OptIn(ExperimentalMaterial3Api::class)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
