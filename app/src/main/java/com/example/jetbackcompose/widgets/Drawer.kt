@@ -56,14 +56,14 @@ fun DrawerBody() {
 }
 
 @Composable
-fun NewsDrawerItem(iconId: Int, textId: Int) {
+fun NewsDrawerItem(iconId: Int, textId: Int,) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = Color.White)
             .padding(7.dp)
     ) {
-        Icon(painter = painterResource(id = iconId), contentDescription = "")
+        Icon(painter = painterResource(id = iconId), contentDescription = "",Modifier.padding(start = 4.dp))
         Spacer(modifier = Modifier.width(10.dp))
         Text(
             text = stringResource(id = textId),

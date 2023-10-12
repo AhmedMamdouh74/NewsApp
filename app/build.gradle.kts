@@ -69,6 +69,7 @@ dependencies {
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    //loading image using url by glide
     implementation("com.github.bumptech.glide:compose:1.0.0-alpha.5")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     val lifecycle_version = "2.6.2"

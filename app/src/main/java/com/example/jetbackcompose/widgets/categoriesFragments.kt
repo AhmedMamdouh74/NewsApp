@@ -55,7 +55,7 @@ fun CategoryCard(item: Category, position: Int,navHostController: NavHostControl
     Card(
         colors = CardDefaults.cardColors(containerColor = colorResource(id = item.backgroundColor)),
         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-        onClick = {navHostController.navigate("${ Constants.NEWS_ROUTE }/${item.apiID}")},
+        onClick = {navHostController.navigate( "${Constants.NEWS_ROUTE}/${item.apiID}" )},
         shape = if (position % 2 == 0) RoundedCornerShape(
             topStart = 16.dp,
             topEnd = 16.dp,

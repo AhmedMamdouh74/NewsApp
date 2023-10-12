@@ -12,7 +12,7 @@ class ApiManager private constructor() {
             // Create a Retrofit instance.
                 Instance = Retrofit
                     .Builder()
-                    .baseUrl("https://newsapi.org/")
+                    .baseUrl("https://newsapi.org/v2/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 

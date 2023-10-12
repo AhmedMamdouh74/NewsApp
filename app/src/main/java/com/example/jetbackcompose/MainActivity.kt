@@ -60,6 +60,7 @@ import com.example.jetbackcompose.widgets.CategoriesContent
 import com.example.jetbackcompose.widgets.DrawerBody
 import com.example.jetbackcompose.widgets.DrawerHeader
 import com.example.jetbackcompose.widgets.NewsFragment
+import com.example.jetbackcompose.widgets.SourcesTaps
 import com.example.newsapp.model.Sources
 import com.example.newsapp.model.SourcesResponse
 import kotlinx.coroutines.launch
@@ -71,7 +72,6 @@ import retrofit2.Response
 class MainActivity : ComponentActivity() {
 
 
-
     @OptIn(ExperimentalMaterial3Api::class)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,8 +80,6 @@ class MainActivity : ComponentActivity() {
             JetbackComposeTheme {
                 // A surface container using the 'background' color from the theme
                 val sourcesList: MutableState<List<Sources>> = remember { mutableStateOf(listOf()) }
-
-
 
 
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -109,13 +107,13 @@ class MainActivity : ComponentActivity() {
                                 CategoriesContent(navController)
                             }
                             composable(
-                                route = "${Constants.NEWS_ROUTE}/{category} ",
+                                route = "${Constants.NEWS_ROUTE}/{category}",
                                 arguments = listOf(navArgument("category") {
                                     type = NavType.StringType
 
                                 })
                             ) {
-                                val argument=it.arguments?.getString("category")
+                                val argument = it.arguments?.getString("category")
                                 NewsFragment(argument)
 
                             }
@@ -174,43 +172,7 @@ fun NewsAppBar(drawerState: DrawerState) {
     )
 }
 
-@Composable
-fun SourcesTaps(sourcesList: List<Sources>) {
-    var selectedIndex by remember {
-        mutableIntStateOf(0)
-    }
-    if (sourcesList.isNotEmpty()) {
-        ScrollableTabRow(
-            selectedTabIndex = selectedIndex,
-            containerColor = Color.Transparent,
-            divider = {},
-            indicator = {}) {
-            sourcesList.forEachIndexed { index, sources ->
-                Tab(
-                    selected = selectedIndex == index,
-                    onClick = {
-                        selectedIndex = index
-                    },
-                    selectedContentColor = Color.White,
-                    unselectedContentColor = Color(0xff39A552),
-                    modifier = if (selectedIndex == index) Modifier
-                        .padding(end = 2.dp)
-                        .background(
-                            Color(0xff39A552),
-                            RoundedCornerShape(50)
-                        )
-                    else
-                        Modifier
-                            .padding(end = 2.dp)
-                            .border(2.dp, Color(0xff39A552), RoundedCornerShape(50)),
-                    text = { Text(text = sources.name ?: "") }
 
-
-                )
-            }
-        }
-    }
-}
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -220,14 +182,6 @@ fun SourcesTaps(sourcesList: List<Sources>) {
 fun GreetingPreview() {
     JetbackComposeTheme {
         Scaffold(topBar = { NewsAppBar(drawerState = DrawerState(DrawerValue.Closed)) }) {
-            SourcesTaps(
-                sourcesList = listOf(
-                    Sources(name = "AbC"),
-                    Sources(name = "abc"),
-                    Sources(name = "abc"),
-                    Sources(name = "abc")
-                )
-            )
 
         }
 
