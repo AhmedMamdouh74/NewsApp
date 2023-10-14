@@ -6,6 +6,7 @@ object Constants {
     val CATEORIES_ROUTE="categories"
     val NEWS_ROUTE="news"
     val API_KEY = "c027443ca9624422bfbe9b160b9ec11a"
+    val DETAILS="details"
     val categories = listOf(
         Category(
             "sports", R.drawable.ball,

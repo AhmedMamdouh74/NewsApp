@@ -1,11 +1,12 @@
 package com.example.jetbackcompose.widgets
 
+import android.view.View.OnClickListener
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -22,6 +23,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.jetbackcompose.Constants
 import com.example.jetbackcompose.R
 
 @Composable
@@ -40,6 +44,8 @@ fun DrawerHeader(modifier: Modifier = Modifier) {
 
 @Composable
 fun DrawerBody() {
+    val navController = rememberNavController()
+
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -48,27 +54,53 @@ fun DrawerBody() {
             .padding(top = 8.dp)
     )
     {
-        NewsDrawerItem(iconId = R.drawable.ic_list, textId = R.string.categories)
-        NewsDrawerItem(iconId = R.drawable.ic_settings, textId = R.string.settings)
+        NewsDrawerItem(
+            iconId = R.drawable.ic_list,
+            textId = R.string.categories,
+            onClickListener = { navController.navigate(Constants.CATEORIES_ROUTE) },
+            //   navController
+        )
+        NewsDrawerItem(
+            iconId = R.drawable.ic_settings,
+            textId = R.string.settings,
+            onClickListener = { },
+            //    navController = navController
+        )
 
 
     }
 }
 
 @Composable
-fun NewsDrawerItem(iconId: Int, textId: Int,) {
+fun NewsDrawerItem(
+    iconId: Int,
+    textId: Int,
+    onClickListener: OnClickListener,
+    // navController: NavController
+) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = Color.White)
             .padding(7.dp)
     ) {
-        Icon(painter = painterResource(id = iconId), contentDescription = "",Modifier.padding(start = 4.dp))
+        Icon(
+            painter = painterResource(id = iconId),
+            contentDescription = "",
+            Modifier.padding(start = 4.dp)
+        )
         Spacer(modifier = Modifier.width(10.dp))
         Text(
             text = stringResource(id = textId),
-            style = TextStyle(fontSize = 18.sp, color = Color(0xff303030), fontWeight = FontWeight.Bold )
+            style = TextStyle(
+                fontSize = 18.sp,
+                color = Color(0xff303030),
+                fontWeight = FontWeight.Bold
+            )
         )
 
     }
+
+
 }

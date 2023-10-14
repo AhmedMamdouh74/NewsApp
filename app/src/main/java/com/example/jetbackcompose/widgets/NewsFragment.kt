@@ -1,6 +1,9 @@
 package com.example.jetbackcompose.widgets
 
+import android.os.Build
+import android.os.Bundle
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -10,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -29,6 +33,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.jetbackcompose.Constants
@@ -43,39 +49,50 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun NewsFragment(category: String?) {
+fun NewsFragment(category: String?, navController: NavController) {
     val sourcesList = remember {
         mutableStateOf<List<Sources>>((listOf()))
     }
     val newsList = remember {
         mutableStateOf<List<ArticlesItem>?>(listOf())
-}
+    }
 
     getNewsSources(category, sourcesList)
     Column {
-        SourcesTaps(sourcesList.value,newsList)
-        NewsList(articlesList =newsList.value?: listOf() )
+        SourcesTaps(sourcesList.value, newsList)
+        NewsList(articlesList = newsList.value ?: listOf(), navController)
     }
 
 }
+
+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-fun NewsList(articlesList: List<ArticlesItem>) {
+fun NewsList(articlesList: List<ArticlesItem>, navController: NavController) {
     LazyColumn {
         items(articlesList.size) {
-            NewsCard(articlesItem = articlesList.get(it))
+            NewsCard(articlesItem = articlesList.get(it), navController)
         }
     }
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun NewsCard(articlesItem: ArticlesItem) {
+fun NewsCard(articlesItem: ArticlesItem, navController: NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp, horizontal = 12.dp),
+        onClick = {
+            navController.currentBackStackEntry?.savedStateHandle?.apply {
+                set(Constants.DETAILS, articlesItem)
+            }
+            navController.navigate(Constants.DETAILS)
 
-        ) {
+        }
+
+    ) {
         GlideImage(
             model = articlesItem.urlToImage ?: "",
             contentDescription = "News Picture",
@@ -99,10 +116,13 @@ fun NewsCard(articlesItem: ArticlesItem) {
                 color = colorResource(id = R.color.grey2),
             )
         )
+
+
     }
 }
+
 @Composable
-fun SourcesTaps(sourcesList: List<Sources>,newsResponseState: MutableState<List<ArticlesItem>?>)  {
+fun SourcesTaps(sourcesList: List<Sources>, newsResponseState: MutableState<List<ArticlesItem>?>) {
     var selectedIndex by remember {
         mutableIntStateOf(0)
     }
@@ -113,8 +133,8 @@ fun SourcesTaps(sourcesList: List<Sources>,newsResponseState: MutableState<List<
             divider = {},
             indicator = {}) {
             sourcesList.forEachIndexed { index, sources ->
-                if (selectedIndex==index) {
-                    getNewsBySource(sources,newsResponseState=newsResponseState)
+                if (selectedIndex == index) {
+                    getNewsBySource(sources, newsResponseState = newsResponseState)
                 }
                 Tab(
                     selected = selectedIndex == index,
@@ -150,8 +170,8 @@ fun getNewsBySource(sources: Sources, newsResponseState: MutableState<List<Artic
         .getNewsBySource(Constants.API_KEY, sources.id ?: "")
         .enqueue(object : Callback<NewsResponse> {
             override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
-                val newsResponse=response.body()
-                newsResponseState.value=newsResponse?.articles
+                val newsResponse = response.body()
+                newsResponseState.value = newsResponse?.articles
                 Log.e("TAG", "statusResponse: ${newsResponse?.status}")
                 Log.e("TAG", "onNewsResponse: ${newsResponse?.articles}")
 
@@ -184,16 +204,23 @@ fun getNewsSources(category: String?, sourcesList: MutableState<List<Sources>>) 
             }
         })
 }
+//@Composable
+////fun NewsDetails(navController: NavController) {
+////    val selectedNews = navController.currentBackStackEntry?.savedStateHandle?.get<ArticlesItem>("news")
+////
+////    if (selectedNews != null) {
+////        Text(text = selectedNews.title ?: "")
+////        Text(text = selectedNews.author ?: "")
+////        Text(text = selectedNews.publishedAt ?: "")
+////        Text(text = selectedNews.description ?: "")
+////    } else {
+////        Text(text = "No news selected.")
+////    }
+////}
+
 @Preview(name = "News Card", showSystemUi = true)
 @Composable
 fun NewsCardPreview() {
-    NewsCard(
-        articlesItem = ArticlesItem(
-            "10 / 9 / 2023",
-            "BBC News",
-            "URL To Image",
-            LoremIpsum(15).toString(), title = "Title ", content = LoremIpsum(20).toString()
 
-        )
-    )
+
 }
