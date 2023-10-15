@@ -2,11 +2,12 @@ package com.example.jetbackcompose.newsdetails
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,11 +23,13 @@ import com.example.jetbackcompose.Constants
 import com.example.jetbackcompose.R
 import com.example.jetbackcompose.api.model.ArticlesItem
 
-@OptIn(ExperimentalGlideComposeApi::class)
+@OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun NewsDetails(navController: NavController) {
     val news =
         navController.previousBackStackEntry?.savedStateHandle?.get<ArticlesItem>(Constants.DETAILS)
+    // Get the URL of the article.
+    val url = news?.url ?: return
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -63,7 +66,18 @@ fun NewsDetails(navController: NavController) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 4.dp, horizontal = 12.dp)
+                .padding(vertical = 4.dp, horizontal = 12.dp),
+       //     onClick = {
+
+//                // Get the URL of the article.
+//                val url = news.url ?: return
+//
+//// Create an intent to open a web browser.
+//                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+//
+//// Start the activity.
+//                startActivity(intent)
+      //      }
         ) {
             Text(
 
@@ -73,6 +87,7 @@ fun NewsDetails(navController: NavController) {
                     color = colorResource(id = R.color.grey2),
                 )
             )
+
 
         }
 

@@ -204,19 +204,7 @@ fun getNewsSources(category: String?, sourcesList: MutableState<List<Sources>>) 
             }
         })
 }
-//@Composable
-////fun NewsDetails(navController: NavController) {
-////    val selectedNews = navController.currentBackStackEntry?.savedStateHandle?.get<ArticlesItem>("news")
-////
-////    if (selectedNews != null) {
-////        Text(text = selectedNews.title ?: "")
-////        Text(text = selectedNews.author ?: "")
-////        Text(text = selectedNews.publishedAt ?: "")
-////        Text(text = selectedNews.description ?: "")
-////    } else {
-////        Text(text = "No news selected.")
-////    }
-////}
+
 
 @Preview(name = "News Card", showSystemUi = true)
 @Composable
