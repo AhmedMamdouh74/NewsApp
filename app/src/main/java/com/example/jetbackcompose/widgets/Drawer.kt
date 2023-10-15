@@ -3,6 +3,7 @@ package com.example.jetbackcompose.widgets
 import android.view.View.OnClickListener
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.jetbackcompose.Constants
 import com.example.jetbackcompose.R
@@ -43,8 +45,8 @@ fun DrawerHeader(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun DrawerBody() {
-    val navController = rememberNavController()
+fun DrawerBody(navController: NavHostController, onCLoseDrawer: () -> Unit) {
+    //  val navController = rememberNavController()
 
     Column(
         modifier = Modifier
@@ -52,22 +54,21 @@ fun DrawerBody() {
             .fillMaxWidth(0.6f)
             .background(color = Color.White)
             .padding(top = 8.dp)
+
+
     )
     {
         NewsDrawerItem(
             iconId = R.drawable.ic_list,
             textId = R.string.categories,
-            onClickListener = { navController.navigate(Constants.CATEORIES_ROUTE) },
-            //   navController
-        )
+        ) {
+            navController.navigate(Constants.CATEORIES_ROUTE)
+            onCLoseDrawer()
+        }
         NewsDrawerItem(
             iconId = R.drawable.ic_settings,
             textId = R.string.settings,
-            onClickListener = { },
-            //    navController = navController
-        )
-
-
+        ) {}
     }
 }
 
@@ -75,15 +76,15 @@ fun DrawerBody() {
 fun NewsDrawerItem(
     iconId: Int,
     textId: Int,
-    onClickListener: OnClickListener,
-    // navController: NavController
-) {
+    onNewsDrawerItemClick: () -> Unit,
+    ) {
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = Color.White)
             .padding(7.dp)
+            .clickable { onNewsDrawerItemClick() }
     ) {
         Icon(
             painter = painterResource(id = iconId),

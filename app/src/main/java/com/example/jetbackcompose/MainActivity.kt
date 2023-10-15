@@ -41,8 +41,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -51,15 +49,14 @@ import androidx.navigation.navArgument
 import com.example.jetbackcompose.newsdetails.NewsDetails
 
 import com.example.jetbackcompose.ui.theme.JetbackComposeTheme
-import com.example.jetbackcompose.widgets.CategoriesContent
+import com.example.jetbackcompose.widgets.categories.CategoriesContent
 import com.example.jetbackcompose.widgets.DrawerBody
 import com.example.jetbackcompose.widgets.DrawerHeader
-import com.example.jetbackcompose.newsdetails .NewsDetails
-import com.example.jetbackcompose.widgets.NewsFragment
+import com.example.jetbackcompose.newsdetails.NewsDetails
+import com.example.jetbackcompose.widgets.news.NewsFragment
 
 import com.example.newsapp.model.Sources
 import kotlinx.coroutines.launch
-
 
 
 class MainActivity : ComponentActivity() {
@@ -74,7 +71,8 @@ class MainActivity : ComponentActivity() {
             JetbackComposeTheme {
                 // A surface container using the 'background' color from the theme
                 val sourcesList: MutableState<List<Sources>> = remember { mutableStateOf(listOf()) }
-
+                val navController = rememberNavController()
+                val scope = rememberCoroutineScope()
 
 
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -82,7 +80,12 @@ class MainActivity : ComponentActivity() {
                     drawerContent = {
                         Column(modifier = Modifier.fillMaxSize()) {
                             DrawerHeader()
-                            DrawerBody( )
+                            DrawerBody(navController) {
+                                scope.launch {
+                                    drawerState.close()
+                                }
+
+                            }
 
 
                         }
@@ -92,7 +95,7 @@ class MainActivity : ComponentActivity() {
                     Scaffold(topBar = { NewsAppBar(drawerState) }) {
 
                         //SourcesTaps(sourcesList = sourcesList.value)
-                        val navController = rememberNavController()
+
                         NavHost(
                             navController = navController,
                             startDestination = Constants.CATEORIES_ROUTE,
@@ -115,7 +118,7 @@ class MainActivity : ComponentActivity() {
                             composable(
                                 route = Constants.DETAILS
                             ) {
-                               NewsDetails(
+                                NewsDetails(
                                     navController = navController
                                 )
                             }
@@ -128,6 +131,8 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
