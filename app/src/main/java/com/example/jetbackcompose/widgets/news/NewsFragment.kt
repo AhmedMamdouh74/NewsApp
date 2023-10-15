@@ -31,6 +31,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -47,18 +48,13 @@ import retrofit2.Response
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-fun NewsFragment(category: String?, navController: NavController) {
-    val sourcesList = remember {
-        mutableStateOf<List<Sources>>((listOf()))
-    }
-    val newsList = remember {
-        mutableStateOf<List<ArticlesItem>?>(listOf())
-    }
+fun NewsFragment(category: String?, navController: NavController,viewModel: NewsViewModel= androidx.lifecycle.viewmodel.compose.viewModel()) {
 
-    getNewsSources(category, sourcesList)
+
+    viewModel.getNewsSources(category,viewModel.sourcesList)
     Column {
-        SourcesTaps(sourcesList.value, newsList)
-        NewsList(articlesList = newsList.value ?: listOf(), navController)
+        SourcesTaps(viewModel.sourcesList.value,viewModel. newsList)
+        NewsList(articlesList =viewModel.newsList.value ?: listOf(), navController)
     }
 
 }
@@ -120,29 +116,27 @@ fun NewsCard(articlesItem: ArticlesItem, navController: NavController) {
 }
 
 @Composable
-fun SourcesTaps(sourcesList: List<Sources>, newsResponseState: MutableState<List<ArticlesItem>?>) {
-    var selectedIndex by remember {
-        mutableIntStateOf(0)
-    }
+fun SourcesTaps(sourcesList: List<Sources>, newsResponseState: MutableState<List<ArticlesItem>?>,viewModel: NewsViewModel= androidx.lifecycle.viewmodel.compose.viewModel()) {
+
     if (sourcesList.isNotEmpty()) {
         ScrollableTabRow(
-            selectedTabIndex = selectedIndex,
+            selectedTabIndex = viewModel.selectedIndex.value,
             containerColor = Color.Transparent,
             divider = {},
             indicator = {}) {
             sourcesList.forEachIndexed { index, sources ->
-                if (selectedIndex == index) {
-                    getNewsBySource(sources, newsResponseState = newsResponseState)
+                if (viewModel.selectedIndex.value == index) {
+                   viewModel. getNewsBySource(sources, newsResponseState = newsResponseState)
                 }
                 Tab(
-                    selected = selectedIndex == index,
+                    selected = viewModel.selectedIndex.value == index,
                     onClick = {
-                        selectedIndex = index
+                        viewModel.selectedIndex.value = index
 
                     },
                     selectedContentColor = Color.White,
                     unselectedContentColor = Color(0xff39A552),
-                    modifier = if (selectedIndex == index) Modifier
+                    modifier = if (viewModel.selectedIndex.value == index) Modifier
                         .padding(end = 2.dp)
                         .background(
                             Color(0xff39A552),
@@ -162,46 +156,7 @@ fun SourcesTaps(sourcesList: List<Sources>, newsResponseState: MutableState<List
 }
 
 
-fun getNewsBySource(sources: Sources, newsResponseState: MutableState<List<ArticlesItem>?>) {
-    ApiManager
-        .getApis()
-        .getNewsBySource(Constants.API_KEY, sources.id ?: "")
-        .enqueue(object : Callback<NewsResponse> {
-            override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
-                val newsResponse = response.body()
-                newsResponseState.value = newsResponse?.articles
-                Log.e("TAG", "statusResponse: ${newsResponse?.status}")
-                Log.e("TAG", "onNewsResponse: ${newsResponse?.articles}")
 
-            }
-
-            override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
-
-            }
-        })
-}
-
-fun getNewsSources(category: String?, sourcesList: MutableState<List<Sources>>) {
-    ApiManager
-        .getApis()
-        .getSources(Constants.API_KEY, category = category ?: "")
-        .enqueue(object : Callback<SourcesResponse> {
-            override fun onResponse(
-                call: Call<SourcesResponse>,
-                response: Response<SourcesResponse>
-            ) {
-                val body = response.body()
-                Log.e("TAG", "onResponse: ${body?.status}")
-                Log.e("TAG", "onResponse: ${body?.sources}")
-                sourcesList.value = body?.sources ?: listOf()
-            }
-
-            override fun onFailure(call: Call<SourcesResponse>, t: Throwable) {
-
-
-            }
-        })
-}
 
 
 @Preview(name = "News Card", showSystemUi = true)
