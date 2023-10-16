@@ -10,14 +10,14 @@ import retrofit2.http.Query
 //  The interface is used to make network requests to the news API.
 interface WebServices {
     @GET("top-headlines/sources")
-    fun getSources(
+    suspend fun getSources(
         @Query("apiKey") apiKey: String,
         @Query("category") category: String
-    ): Call<SourcesResponse>
+    ): SourcesResponse
 
     @GET("everything")
-    fun getNewsBySource(
+    suspend fun getNewsBySource(
         @Query("apiKey") apiKey: String,
         @Query("sources") sourcesId: String
-    ): Call<NewsResponse>
+    ): NewsResponse
 }
