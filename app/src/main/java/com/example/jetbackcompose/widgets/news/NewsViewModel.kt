@@ -6,22 +6,23 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.jetbackcompose.Constants
-import com.example.jetbackcompose.api.ApiManager
 import com.example.jetbackcompose.api.model.ArticlesItem
-import com.example.jetbackcompose.database.NewsLocalDataBase
 import com.example.jetbackcompose.repo.NetworkHandler
-import com.example.jetbackcompose.repo.sources.SourcesOfflineDataSource
-import com.example.jetbackcompose.repo.sources.SourcesOfflineDataSourceImpl
-import com.example.jetbackcompose.repo.sources.SourcesOnlineDataSource
-import com.example.jetbackcompose.repo.sources.SourcesOnlineDataSourceImpl
+import com.example.jetbackcompose.repo.news.NewsRepository
 import com.example.jetbackcompose.repo.sources.SourcesRepository
-import com.example.jetbackcompose.repo.sources.SourcesRepositoryImpl
 import com.example.newsapp.model.Sources
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
+@HiltViewModel
+class NewsViewModel @Inject constructor(
+    val sourcesRepository: SourcesRepository,
+    val newsRepository: NewsRepository,
+) : ViewModel() {
 
-class NewsViewModel : ViewModel() {
     val sourcesList =
         mutableStateOf<List<Sources>>((listOf()))
 
@@ -29,23 +30,18 @@ class NewsViewModel : ViewModel() {
         mutableStateOf<List<ArticlesItem>?>(listOf())
     var selectedIndex =
         mutableIntStateOf(0)
-    var sourcesRepository: SourcesRepository? = null
-    var sourcesOnlineDataSource: SourcesOnlineDataSource? = null
-
-    var sourcesOfflineDataSource: SourcesOfflineDataSource? = null
-
-    var networkHandler: NetworkHandler? = null
 
 
     fun getNewsBySource(sources: Sources, newsResponseState: MutableState<List<ArticlesItem>?>) {
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val newsResponse =
-                    ApiManager
-                        .getApis()
-                        .getNewsBySource(Constants.API_KEY, sources.id ?: "")
-                newsResponseState.value = newsResponse?.articles
+                    newsRepository.getNewsData(sources.id)
+                withContext(Dispatchers.Main) {
+                    newsResponseState.value = newsResponse
+                }
+
             } catch (ex: Exception) {
                 Log.e("TAG", "${ex.message} ")
 
@@ -73,24 +69,15 @@ class NewsViewModel : ViewModel() {
 
     fun getNewsSources(category: String?, sourcesList: MutableState<List<Sources>>) {
 
-        viewModelScope.launch {
-            networkHandler = object : NetworkHandler {
-                override fun isOnline(): Boolean {
-                    return true
-                }
-            }
-            sourcesOnlineDataSource = SourcesOnlineDataSourceImpl(ApiManager.getApis())
-            sourcesOfflineDataSource =
-                SourcesOfflineDataSourceImpl(NewsLocalDataBase.getInstance().getSourcesDao())
+        viewModelScope.launch(Dispatchers.IO) {
 
-            sourcesRepository = SourcesRepositoryImpl(
-                sourcesOnlineDataSource!!,
-                sourcesOfflineDataSource!!,
-                networkHandler = networkHandler!!
-            )
+
             try {
                 var sourcesResponse = sourcesRepository?.getSourcesData(category ?: "")
-                sourcesList.value = sourcesResponse ?: listOf()
+                withContext(Dispatchers.Main) {
+                    sourcesList.value = sourcesResponse ?: listOf()
+                }
+
             } catch (ex: Exception) {
                 Log.e("TAG", "${ex.message}")
             }

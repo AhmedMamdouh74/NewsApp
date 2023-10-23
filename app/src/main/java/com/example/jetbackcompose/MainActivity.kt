@@ -56,9 +56,10 @@ import com.example.jetbackcompose.newsdetails.NewsDetails
 import com.example.jetbackcompose.widgets.news.NewsFragment
 
 import com.example.newsapp.model.Sources
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
 

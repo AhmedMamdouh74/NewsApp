@@ -15,10 +15,16 @@ abstract class NewsLocalDataBase : RoomDatabase() {
     companion object {
         private var Database: NewsLocalDataBase? = null
         fun init(context: Context) {
-            Database = Room
-                .databaseBuilder(context.applicationContext, NewsLocalDataBase::class.java, "news")
-                .fallbackToDestructiveMigration()
-                .build()
+            if (Database==null) {
+                Database = Room
+                    .databaseBuilder(
+                        context.applicationContext,
+                        NewsLocalDataBase::class.java,
+                        "news DB"
+                    )
+                    .fallbackToDestructiveMigration()
+                    .build()
+            }
 
         }
 

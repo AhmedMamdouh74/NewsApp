@@ -23,7 +23,7 @@ import com.example.jetbackcompose.Constants
 import com.example.jetbackcompose.R
 import com.example.jetbackcompose.api.model.ArticlesItem
 
-@OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun NewsDetails(navController: NavController) {
     val news =

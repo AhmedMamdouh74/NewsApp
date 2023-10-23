@@ -112,5 +112,7 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
     // To use Kotlin annotation processing tool (kapt)
     kapt("androidx.room:room-compiler:$room_version")
+    //solution for that exception -> Cannot create an instance of class com.example.jetbackcompose.widgets.news.NewsViewModel
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
 }

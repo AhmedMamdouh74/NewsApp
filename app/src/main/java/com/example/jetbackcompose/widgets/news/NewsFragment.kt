@@ -25,6 +25,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -36,13 +37,17 @@ import com.example.newsapp.model.Sources
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-fun NewsFragment(category: String?, navController: NavController,viewModel: NewsViewModel= androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun NewsFragment(
+    category: String?,
+    navController: NavController,
+    viewModel: NewsViewModel = hiltViewModel()
+) {
 
 
-    viewModel.getNewsSources(category,viewModel.sourcesList)
+    viewModel.getNewsSources(category, viewModel.sourcesList)
     Column {
-        SourcesTaps(viewModel.sourcesList.value,viewModel. newsList)
-        NewsList(articlesList =viewModel.newsList.value ?: listOf(), navController)
+        SourcesTaps(viewModel.sourcesList.value, viewModel.newsList)
+        NewsList(articlesList = viewModel.newsList.value ?: listOf(), navController)
     }
 
 }
@@ -61,7 +66,10 @@ fun NewsList(articlesList: List<ArticlesItem>, navController: NavController) {
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun NewsCard(articlesItem: ArticlesItem, navController: NavController) {
+fun NewsCard(
+    articlesItem: ArticlesItem,
+    navController: NavController
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -104,7 +112,11 @@ fun NewsCard(articlesItem: ArticlesItem, navController: NavController) {
 }
 
 @Composable
-fun SourcesTaps(sourcesList: List<Sources>, newsResponseState: MutableState<List<ArticlesItem>?>,viewModel: NewsViewModel= androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun SourcesTaps(
+    sourcesList: List<Sources>,
+    newsResponseState: MutableState<List<ArticlesItem>?>,
+    viewModel: NewsViewModel = hiltViewModel()
+) {
 
     if (sourcesList.isNotEmpty()) {
         ScrollableTabRow(
@@ -114,7 +126,7 @@ fun SourcesTaps(sourcesList: List<Sources>, newsResponseState: MutableState<List
             indicator = {}) {
             sourcesList.forEachIndexed { index, sources ->
                 if (viewModel.selectedIndex.value == index) {
-                    viewModel. getNewsBySource(sources, newsResponseState = newsResponseState)
+                    viewModel.getNewsBySource(sources, newsResponseState = newsResponseState)
                 }
                 Tab(
                     selected = viewModel.selectedIndex.value == index,
@@ -142,9 +154,6 @@ fun SourcesTaps(sourcesList: List<Sources>, newsResponseState: MutableState<List
         }
     }
 }
-
-
-
 
 
 @Preview(name = "News Card", showSystemUi = true)
