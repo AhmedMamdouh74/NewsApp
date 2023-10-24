@@ -6,11 +6,10 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.jetbackcompose.api.model.ArticlesItem
-import com.example.jetbackcompose.repo.NetworkHandler
-import com.example.jetbackcompose.repo.news.NewsRepository
-import com.example.jetbackcompose.repo.sources.SourcesRepository
-import com.example.newsapp.model.Sources
+import com.example.domin.entities.ArticlesItemDTO
+import com.example.domin.entities.SourcesItemDTO
+import com.example.domin.repos.NewsRepository
+import com.example.domin.repos.SourcesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,15 +23,15 @@ class NewsViewModel @Inject constructor(
 ) : ViewModel() {
 
     val sourcesList =
-        mutableStateOf<List<Sources>>((listOf()))
+        mutableStateOf<List<SourcesItemDTO>>((listOf()))
 
     val newsList =
-        mutableStateOf<List<ArticlesItem>?>(listOf())
+        mutableStateOf<List<ArticlesItemDTO>?>(listOf())
     var selectedIndex =
         mutableIntStateOf(0)
 
 
-    fun getNewsBySource(sources: Sources, newsResponseState: MutableState<List<ArticlesItem>?>) {
+    fun getNewsBySource(sources: SourcesItemDTO, newsResponseState: MutableState<List<ArticlesItemDTO>?>) {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -49,25 +48,9 @@ class NewsViewModel @Inject constructor(
 
         }
 
-//            .enqueue(object : Callback<NewsResponse> {
-//                override fun onResponse(
-//                    call: Call<NewsResponse>,
-//                    response: Response<NewsResponse>
-//                ) {
-//                    val newsResponse = response.body()
-//
-//                    Log.e("TAG", "statusResponse: ${newsResponse?.status}")
-//                    Log.e("TAG", "onNewsResponse: ${newsResponse?.articles}")
-//
-//                }
-//
-//                override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
-//
-//                }
-//            })
     }
 
-    fun getNewsSources(category: String?, sourcesList: MutableState<List<Sources>>) {
+    fun getNewsSources(category: String?, sourcesList: MutableState<List<SourcesItemDTO>>) {
 
         viewModelScope.launch(Dispatchers.IO) {
 
@@ -83,22 +66,7 @@ class NewsViewModel @Inject constructor(
             }
 
 
-//            .enqueue(object : Callback<SourcesResponse> {
-//                override fun onResponse(
-//                    call: Call<SourcesResponse>,
-//                    response: Response<SourcesResponse>
-//                ) {
-//                    val body = response.body()
-//                    Log.e("TAG", "onResponse: ${body?.status}")
-//                    Log.e("TAG", "onResponse: ${body?.sources}")
-//
-//                }
-//
-//                override fun onFailure(call: Call<SourcesResponse>, t: Throwable) {
-//
-//
-//                }
-//            })
+
         }
     }
 }

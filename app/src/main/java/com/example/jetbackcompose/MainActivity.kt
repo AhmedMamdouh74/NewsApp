@@ -46,16 +46,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.domin.entities.SourcesItemDTO
 import com.example.jetbackcompose.newsdetails.NewsDetails
 
 import com.example.jetbackcompose.ui.theme.JetbackComposeTheme
 import com.example.jetbackcompose.widgets.categories.CategoriesContent
 import com.example.jetbackcompose.widgets.DrawerBody
 import com.example.jetbackcompose.widgets.DrawerHeader
-import com.example.jetbackcompose.newsdetails.NewsDetails
 import com.example.jetbackcompose.widgets.news.NewsFragment
 
-import com.example.newsapp.model.Sources
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -71,7 +70,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             JetbackComposeTheme {
                 // A surface container using the 'background' color from the theme
-                val sourcesList: MutableState<List<Sources>> = remember { mutableStateOf(listOf()) }
+                val sourcesList: MutableState<List<SourcesItemDTO>> = remember { mutableStateOf(listOf()) }
                 val navController = rememberNavController()
                 val scope = rememberCoroutineScope()
 

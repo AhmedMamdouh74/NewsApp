@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,15 +17,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.domin.entities.ArticlesItemDTO
 import com.example.jetbackcompose.Constants
 import com.example.jetbackcompose.R
-import com.example.jetbackcompose.api.model.ArticlesItem
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun NewsDetails(navController: NavController) {
     val news =
-        navController.previousBackStackEntry?.savedStateHandle?.get<ArticlesItem>(Constants.DETAILS)
+        navController.previousBackStackEntry?.savedStateHandle?.get<ArticlesItemDTO>(Constants.DETAILS)
     // Get the URL of the article.
     val url = news?.url ?: return
     Column(

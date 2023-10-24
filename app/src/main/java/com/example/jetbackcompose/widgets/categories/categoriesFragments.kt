@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.jetbackcompose.Constants
-import com.example.jetbackcompose.api.model.Category
+import com.example.jetbackcompose.Category
 
 @Composable
 fun CategoriesContent(navHostController: NavHostController) {
@@ -49,7 +49,7 @@ fun CategoriesContent(navHostController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryCard(item: Category, position: Int,navHostController: NavHostController) {
+fun CategoryCard(item: Category, position: Int, navHostController: NavHostController) {
     Card(
         colors = CardDefaults.cardColors(containerColor = colorResource(id = item.backgroundColor)),
         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),

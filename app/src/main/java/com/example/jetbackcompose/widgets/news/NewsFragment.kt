@@ -29,10 +29,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.domin.entities.ArticlesItemDTO
+import com.example.domin.entities.SourcesItemDTO
 import com.example.jetbackcompose.Constants
 import com.example.jetbackcompose.R
-import com.example.jetbackcompose.api.model.ArticlesItem
-import com.example.newsapp.model.Sources
+
 
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -55,7 +56,7 @@ fun NewsFragment(
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-fun NewsList(articlesList: List<ArticlesItem>, navController: NavController) {
+fun NewsList(articlesList: List<ArticlesItemDTO>, navController: NavController) {
     LazyColumn {
         items(articlesList.size) {
             NewsCard(articlesItem = articlesList.get(it), navController)
@@ -67,7 +68,7 @@ fun NewsList(articlesList: List<ArticlesItem>, navController: NavController) {
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun NewsCard(
-    articlesItem: ArticlesItem,
+    articlesItem: ArticlesItemDTO,
     navController: NavController
 ) {
     Card(
@@ -113,8 +114,8 @@ fun NewsCard(
 
 @Composable
 fun SourcesTaps(
-    sourcesList: List<Sources>,
-    newsResponseState: MutableState<List<ArticlesItem>?>,
+    sourcesList: List<SourcesItemDTO>,
+    newsResponseState: MutableState<List<ArticlesItemDTO>?>,
     viewModel: NewsViewModel = hiltViewModel()
 ) {
 
