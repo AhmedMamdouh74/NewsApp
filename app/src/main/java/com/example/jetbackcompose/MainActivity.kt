@@ -49,7 +49,7 @@ import androidx.navigation.navArgument
 import com.example.domin.entities.SourcesItemDTO
 import com.example.jetbackcompose.newsdetails.NewsDetails
 
-import com.example.jetbackcompose.ui.theme.JetbackComposeTheme
+import com.example.jetbackcompose.ui.theme.JetpackComposeTheme
 import com.example.jetbackcompose.widgets.categories.CategoriesContent
 import com.example.jetbackcompose.widgets.DrawerBody
 import com.example.jetbackcompose.widgets.DrawerHeader
@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            JetbackComposeTheme {
+            JetpackComposeTheme {
                 // A surface container using the 'background' color from the theme
                 val sourcesList: MutableState<List<SourcesItemDTO>> = remember { mutableStateOf(listOf()) }
                 val navController = rememberNavController()
@@ -186,7 +186,7 @@ fun NewsAppBar(drawerState: DrawerState) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun GreetingPreview() {
-    JetbackComposeTheme {
+    JetpackComposeTheme {
         Scaffold(topBar = { NewsAppBar(drawerState = DrawerState(DrawerValue.Closed)) }) {
 
         }

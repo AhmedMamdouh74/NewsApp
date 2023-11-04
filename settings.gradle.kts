@@ -15,5 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "jetback compose"
 include(":app")
-include(":domin")
+include(":domain")
 include(":data")

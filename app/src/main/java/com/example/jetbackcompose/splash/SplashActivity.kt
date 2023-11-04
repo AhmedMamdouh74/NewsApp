@@ -6,7 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.core.withInfiniteAnimationFrameMillis
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,13 +21,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.jetbackcompose.MainActivity
 import com.example.jetbackcompose.R
-import com.example.jetbackcompose.ui.theme.JetbackComposeTheme
+import com.example.jetbackcompose.ui.theme.JetpackComposeTheme
 
 class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            JetbackComposeTheme {
+            JetpackComposeTheme {
                 // A surface container using the 'background' color from the theme
                 splashContent()
                 Handler(Looper.getMainLooper()).postDelayed({
@@ -79,7 +78,7 @@ fun splashContent(modifier: Modifier = Modifier) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun GreetingPreview() {
-    JetbackComposeTheme {
+    JetpackComposeTheme {
         splashContent()
 
     }

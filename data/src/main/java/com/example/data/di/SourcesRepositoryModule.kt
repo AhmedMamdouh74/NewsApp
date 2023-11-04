@@ -1,4 +1,4 @@
-package com.example.jetbackcompose.di
+package com.example.data.di
 
 import com.example.data.NetworkHandler
 import com.example.data.api.WebServices
