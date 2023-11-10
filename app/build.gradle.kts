@@ -98,20 +98,10 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$nav_version")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-
     //hilt
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
 
-
-
-    val room_version = "2.5.2"
-
-    implementation("androidx.room:room-runtime:$room_version")
-    // optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:$room_version")
-    // To use Kotlin annotation processing tool (kapt)
-    kapt("androidx.room:room-compiler:$room_version")
     //solution for that exception -> Cannot create an instance of class com.example.jetbackcompose.widgets.news.NewsViewModel
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 

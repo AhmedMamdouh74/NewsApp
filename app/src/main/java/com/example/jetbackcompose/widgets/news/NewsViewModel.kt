@@ -24,14 +24,15 @@ class NewsViewModel @Inject constructor(
 
     val sourcesList =
         mutableStateOf<List<SourcesItemDTO>>((listOf()))
-
     val newsList =
         mutableStateOf<List<ArticlesItemDTO>?>(listOf())
     var selectedIndex =
         mutableIntStateOf(0)
 
-
-    fun getNewsBySource(sources: SourcesItemDTO, newsResponseState: MutableState<List<ArticlesItemDTO>?>) {
+    fun getNewsBySource(
+        sources: SourcesItemDTO,
+        newsResponseState: MutableState<List<ArticlesItemDTO>?>
+    ) {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -43,18 +44,12 @@ class NewsViewModel @Inject constructor(
 
             } catch (ex: Exception) {
                 Log.e("TAG", "${ex.message} ")
-
             }
-
         }
-
     }
 
     fun getNewsSources(category: String?, sourcesList: MutableState<List<SourcesItemDTO>>) {
-
         viewModelScope.launch(Dispatchers.IO) {
-
-
             try {
                 var sourcesResponse = sourcesRepository?.getSourcesData(category ?: "")
                 withContext(Dispatchers.Main) {
@@ -64,9 +59,6 @@ class NewsViewModel @Inject constructor(
             } catch (ex: Exception) {
                 Log.e("TAG", "${ex.message}")
             }
-
-
-
         }
     }
 }
