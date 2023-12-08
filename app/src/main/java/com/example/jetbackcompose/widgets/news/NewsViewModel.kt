@@ -10,6 +10,8 @@ import com.example.domin.entities.ArticlesItemDTO
 import com.example.domin.entities.SourcesItemDTO
 import com.example.domin.repos.NewsRepository
 import com.example.domin.repos.SourcesRepository
+import com.example.domin.usecases.GetNewsUseCases
+import com.example.domin.usecases.GetSourcesUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,8 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewsViewModel @Inject constructor(
-    val sourcesRepository: SourcesRepository,
-    val newsRepository: NewsRepository,
+    val getSourcesUseCases: GetSourcesUseCases,
+    val getNewsUseCases: GetNewsUseCases
 ) : ViewModel() {
 
     val sourcesList =
@@ -37,7 +39,8 @@ class NewsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val newsResponse =
-                    newsRepository.getNewsData(sources.id)
+                    // newsRepository.getNewsData(sources.id)
+                    getNewsUseCases.getNewsData(sources.id)
                 withContext(Dispatchers.Main) {
                     newsResponseState.value = newsResponse
                 }
@@ -51,7 +54,7 @@ class NewsViewModel @Inject constructor(
     fun getNewsSources(category: String?, sourcesList: MutableState<List<SourcesItemDTO>>) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                var sourcesResponse = sourcesRepository?.getSourcesData(category ?: "")
+                var sourcesResponse = getSourcesUseCases.getSourcesData(category!!)
                 withContext(Dispatchers.Main) {
                     sourcesList.value = sourcesResponse ?: listOf()
                 }

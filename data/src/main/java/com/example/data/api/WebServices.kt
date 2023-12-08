@@ -1,6 +1,8 @@
 package com.example.data.api
 
 
+import com.example.data.models.NewsResponse
+import com.example.data.models.SourcesResponse
 import com.example.domin.entities.NewsResponseDTO
 import com.example.domin.entities.SourcesResponseDTO
 import retrofit2.http.GET
@@ -12,11 +14,11 @@ interface WebServices {
     suspend fun getSources(
         @Query("apiKey") apiKey: String,
         @Query("category") category: String
-    ): SourcesResponseDTO
+    ): SourcesResponse
 
     @GET("everything")
     suspend fun getNewsBySource(
         @Query("apiKey") apiKey: String,
         @Query("sources") sourcesId: String
-    ): NewsResponseDTO
+    ): NewsResponse
 }

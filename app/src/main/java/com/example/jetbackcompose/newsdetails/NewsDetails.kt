@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -76,7 +77,7 @@ fun NewsDetails(navController: NavController) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 4.dp, horizontal = 12.dp),
+                .padding(vertical = 4.dp, horizontal = 12.dp)
             //     onClick = {
 
 //                // Get the URL of the article.
@@ -88,7 +89,7 @@ fun NewsDetails(navController: NavController) {
 //// Start the activity.
 //                startActivity(intent)
             //      }
-            onClick = {context.startActivity(intent)}
+
         ) {
             Text(
 
@@ -98,6 +99,10 @@ fun NewsDetails(navController: NavController) {
                     color = colorResource(id = R.color.grey2),
                 )
             )
+            TextButton(onClick = { context.startActivity(intent)}) {
+                Text(text = "View Full Article")
+                
+            }
 
 
         }
